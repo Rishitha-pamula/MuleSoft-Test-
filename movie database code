@@ -1,0 +1,133 @@
+/* Connect to the SQLite database */
+package net.sqlitetutorial;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+public class Connect {
+    
+ //Connect to a sample database
+     
+    public static void connect() {
+        Connection conn = null;
+        try {
+            // db parameters
+            String url = "jdbc:sqlite:C:/sqlite/db/rishi.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url);
+            
+            System.out.println("Connection to SQLite has been established.");
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+    public static void main(String[] args) {
+        connect();
+    }
+}
+
+
+/*Creating a new table (Movies) */
+package net.sqlitetutorial;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class Main {
+
+    //Create a new table in the test database
+    public static void createNewTable() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:C://sqlite/db/tests.db";
+        
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS movies (\n"
+                + "	name text NOT NULL,\n” 
+	+ “	actor text NOT NULL,\n” 
+	+ “	 actress text NOT NULL,\n” 
+	+ “	 director text NOT NULL,\n” 
+	+ “	year of release integer\n”);";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public static void main(String[] args)
+ {
+        createNewTable();
+    }
+}
+
+
+/*Inserting data into Movies table */
+package net.sqlitetutorial;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+public class InsertApp {
+
+    //Connect to the test.db database
+     //return the Connection object
+    private Connection connect() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:C://sqlite/db/test.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    }
+
+    //Insert a new row into the movies table
+    public void insert(String name, String actor, String actress, String director, Integer year of release) 
+{
+        String sql = "INSERT INTO movies(name,actor,actress,director,year of release) VALUES(?,?,?,?,?)";
+
+        try (Connection conn = this.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	pstmt.setString(1, name);
+	pstmt.setString(2, actor);
+	pstmt.setString(3, actress);
+	pstmt.setString(4, director);
+	pstmt.setInteger(5, year of release);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+public static void main(String[] args)
+ {
+   InsertApp app = new InsertApp();
+        // insert three new rows
+        app.insert("Superman vs Batman",” Ben Affleck”, “Amy Adams”,” Zack Snyder”,25-03-2016);
+   app.insert("Deadpool",” Ryan Reynolds”,“ Morena Baccarin ”,”Tim Miller”, 2016-02-12);
+   app.insert("PK",”  Aamir Khan”,“ Anushka Sharma”,” Rajkumar Hirani”, 2014-12-19);
+
+        
+    }
+}
+
+
+/*Querying data from Movies table with or without parameters*/
+
+SELECT * FROM MOVIES’;
+
+SELECT NAME FROM MOVIES WHERE ACTOR = ”AAMIR KHAN” ;
